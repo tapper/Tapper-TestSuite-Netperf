@@ -19,11 +19,11 @@ log4perl.appender.Screen.layout = PatternLayout
 log4perl.appender.Screen.layout.ConversionPattern = %d %p %c - %m in %F{2} (%L)%n';
 Log::Log4perl::init(\$logconf);
 
-my $srv = TestSuite::Netperf::Server->new;
-isa_ok($srv,'TestSuite::Netperf::Server');
+my $srv = Tapper::TestSuite::Netperf::Server->new;
+isa_ok($srv,'Tapper::TestSuite::Netperf::Server');
 
-my $client = TestSuite::Netperf::Client->new;
-isa_ok($client,'TestSuite::Netperf::Client');
+my $client = Tapper::TestSuite::Netperf::Client->new;
+isa_ok($client,'Tapper::TestSuite::Netperf::Client');
 
 # start Netperf Server
 my $pid = fork();
@@ -72,17 +72,17 @@ waitpid($pid,0);
 my $msg = qr(1..\d
 # Tapper-reportgroup-testrun: 10
 # Tapper-suite-name: Netperf
-# Tapper-suite-version: $TestSuite::Netperf::VERSION
+# Tapper-suite-version: $Tapper::TestSuite::Netperf::VERSION
 # Tapper-machine-name: bascha
 ok - Connect to peer
 ok - Getting bandwidth
    ---
-   bytes_per_second: \d+
-   length_send_buffer: \d+
-   length_receive_buffer: \d+
+   bytes_per_second: [\d.]+
+   length_send_buffer: [\d.]+
+   length_receive_buffer: [\d.]+
    ...
 );
 like($content, $msg, 'Received message message');
-
+diag $content;
 
 done_testing();

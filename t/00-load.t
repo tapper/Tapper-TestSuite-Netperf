@@ -3,7 +3,7 @@
 use Test::More tests => 1;
 
 BEGIN {
-	use_ok( 'TestSuite::Netperf' );
+	use_ok( 'Tapper::TestSuite::Netperf' );
 }
 
-diag( "Testing TestSuite::Netperf $TestSuite::Netperf::VERSION, Perl $], $^X" );
+diag( "Testing Tapper::TestSuite::Netperf $Tapper::TestSuite::Netperf::VERSION, Perl $], $^X" );
