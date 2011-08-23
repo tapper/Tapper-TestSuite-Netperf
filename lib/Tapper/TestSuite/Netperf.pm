@@ -1,4 +1,4 @@
-package TestSuite::Netperf;
+package Tapper::TestSuite::Netperf;
 
 use Moose;
 
