@@ -5,6 +5,8 @@ class Tapper::TestSuite::Netperf::Client extends Tapper::TestSuite::Netperf {
         use IO::Socket::INET;
         use YAML;
 
+        our $netperf_desc = "benchmarks-netperf";
+
 =head1 NAME
 
 Tapper::TestSuite::Netperf::Server - Tapper - Network performance measurements - Client
@@ -139,7 +141,7 @@ Get network bandwidth on network to server given as network socket.
                 $end_time = time();
                 $end_time++ if not $end_time > $start_time;
                 $msg      = 'not ' unless $buf1 eq $buf2;
-                $msg     .= "ok - Getting bandwidth";
+                $msg     .= "ok - benchmarks-custom";
                 $msg     .= "\n   ---";
                 $msg     .= "\n   bytes_per_second: "; $msg .= ($size)/(($end_time-$start_time)*1.0);
                 $msg     .= "\n   length_send_buffer: "; $msg .= length($buf1);
@@ -159,13 +161,13 @@ Parse output of netperf command.
                 my $output = `$netperf_file -P0 $server`;
                 if ($output !~ m/^[0-9. ]+$/) {
                         $output =~ s/\n/\n#/gx;
-                        return "not ok - parse netperf\n#$output";
+                        return "not ok - $netperf_desc\n#$output";
                 
                 }
                 $output=~s|^\s*(\S)|$1|;
                 my @output = split /\s+/,$output;
-                
-                return "ok - parse netperf
+
+                return "ok - $netperf_desc
    ---
    recv_socket_size_bytes: $output[0]
    send_socket_size_bytes: $output[1]
@@ -211,12 +213,11 @@ Run the netperf client.
                 my $netperf_file = `which netperf`;
                 chomp($netperf_file);
                 if (-e $netperf_file) {
-                        push @report, 'ok - netperf exists';
                         $msg = $self->parse_netperf($peers->[0], $netperf_file);
                         push @report, $msg;
                 }
                 else {
-                        push @report, 'not ok - netperf exists';
+                        push @report, 'not ok - $netperf_desc # SKIP no netperf available in PATH';
                 }
 
                 my ($fail, $retval) = $self->tap_report_send(\@report);

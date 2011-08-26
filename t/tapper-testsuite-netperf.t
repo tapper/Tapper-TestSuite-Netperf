@@ -75,7 +75,7 @@ my $msg = qr(1..\d
 # Tapper-suite-version: $Tapper::TestSuite::Netperf::VERSION
 # Tapper-machine-name: bascha
 ok - Connect to peer
-ok - Getting bandwidth
+ok - benchmarks-custom
    ---
    bytes_per_second: [\d.]+
    length_send_buffer: [\d.]+
@@ -83,6 +83,6 @@ ok - Getting bandwidth
    ...
 );
 like($content, $msg, 'Received message message');
-diag $content;
+#diag $content;
 
 done_testing();
