@@ -1,29 +1,14 @@
-use MooseX::Declare;
+package Tapper::TestSuite::Netperf::Client;
+# ABSTRACT: Tapper - Network performance measurements - Client
 
-class Tapper::TestSuite::Netperf::Client extends Tapper::TestSuite::Netperf {
-
+        use Moose;
+        extends 'Tapper::TestSuite::Netperf';
         use IO::Socket::INET;
         use YAML;
 
         our $netperf_desc = "benchmarks-netperf";
 
-=head1 NAME
-
-Tapper::TestSuite::Netperf::Server - Tapper - Network performance measurements - Client
-
-=head1 SYNOPSIS
-
-You most likely want to run the frontend cmdline tool like this
-
-  # host 1
-  $ tapper-testsuite-netperf-server
-
-  # host 2
-  $ tapper-testsuite-netperf-client
-
 =head1 METHODS
-
-=cut
 
 =head2 tap_report_away
 
@@ -36,8 +21,9 @@ Actually send the tap report to receiver.
 
 =cut
 
-        method tap_report_away($tap)
-        {
+        sub tap_report_away {
+                my ($self, $tap) = @_;
+
                 my $reportid;
                 if (my $sock = IO::Socket::INET->new(PeerAddr => $ENV{TAPPER_REPORT_SERVER},
                                                      PeerPort => $ENV{TAPPER_REPORT_PORT},
@@ -71,8 +57,9 @@ protocol.
 
 =cut
 
-        method tap_report_send($report)
-        {
+        sub tap_report_send {
+                my ($self, $report) = @_;
+
                 my $tap = $self->tap_report_create($report);
                 $self->log->debug($tap);
                 return $self->tap_report_away($tap);
@@ -91,9 +78,9 @@ does data transformation, no error should ever occur.
 
 =cut
 
-        method tap_report_create($report)
+        sub tap_report_create {
+                my ($self, $report) = @_;
 
-        {
                 my @report   = @$report;
                 my $hostname = $ENV{TAPPER_HOSTNAME};
                 my $testrun  = $ENV{TAPPER_TESTRUN};
@@ -124,8 +111,9 @@ Get network bandwidth on network to server given as network socket.
 
 =cut
 
-        method get_bandwidth($socket)
-        {
+        sub get_bandwidth {
+                my ($self, $socket) = @_;
+
                 my ($buf1, $buf2, $start_time, $end_time, $msg, $size);
                 my $offset=0; # get rid of warning
 
@@ -156,8 +144,9 @@ Parse output of netperf command.
 
 =cut
 
-        method parse_netperf($server, $netperf_file)
-        {
+        sub parse_netperf {
+                my ($self, $server, $netperf_file) = @_;
+
                 my $output = `$netperf_file -P0 $server`;
                 if ($output !~ m/^[0-9. ]+$/) {
                         $output =~ s/\n/\n#/gx;
@@ -190,8 +179,10 @@ Run the netperf client.
 
 =cut
 
-        method run
+        sub run
         {
+                my ($self) = @_;
+
                 my $config_file = $ENV{TAPPER_SYNC_FILE};
                 return "Config file is not set" if not $config_file;
 
@@ -224,15 +215,10 @@ Run the netperf client.
                 return $retval if $fail;
                 return 0;
         }
-}
 
 1;
 
 __END__
-
-=head1 NAME
-
-Tapper::TestSuite::Netperf::Server - Tapper - Wrapper for Network performance measurements - Server
 
 =head1 SYNOPSIS
 
@@ -243,55 +229,5 @@ You most likely want to run the frontend cmdline tool like this
 
   # host 2
   $ tapper-testsuite-netperf-client
-
-=head1 BUGS
-
-Please report any bugs or feature requests to
-C<bug-tapper-testsuite-netperf at rt.cpan.org>, or through the web
-interface at
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Tapper-TestSuite-Netperf>.
-I will be notified, and then you'll automatically be notified of
-progress on your bug as I make changes.
-
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc Tapper::TestSuite::Netperf
-
-
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Tapper-TestSuite-Netperf>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Tapper-TestSuite-Netperf>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Tapper-TestSuite-Netperf>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Tapper-TestSuite-Netperf/>
-
-=back
-
-
-=head1 AUTHOR
-
-AMD OSRC Tapper Team, C<< <tapper at amd64.org> >>
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2009-2011 AMD OSRC Tapper Team, all rights reserved.
-
-This program is released under the following license: freebsd
 
 =cut

@@ -1,4 +1,6 @@
-#!/opt/tapper/bin/perl
+#!/usr/bin/perl
+# PODNAME: tapper-testsuite-netperf-client
+# ABSTRACT: cmdline frontend to Tapper::TestSuite::Netperf::Client
 
 use Tapper::TestSuite::Netperf::Client;
 use Log::Log4perl;

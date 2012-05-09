@@ -1,27 +1,11 @@
-use MooseX::Declare;
+package Tapper::TestSuite::Netperf::Server;
+# ABSTRACT: Tapper - Network performance measurements - Server
 
-class Tapper::TestSuite::Netperf::Server {
-
-=head1 NAME
-
-Tapper::TestSuite::Netperf::Server - Tapper - Network performance measurements - Server
-
-=head1 SYNOPSIS
-
-You most likely want to run the frontend cmdline tool like this
-
-  # host 1
-  $ tapper-testsuite-netperf-server
-
-  # host 2
-  $ tapper-testsuite-netperf-client
-
-=head1 METHODS
-
-=cut
-
+        use Moose;
         use IO::Handle;
         use IO::Socket::INET;
+
+=head1 METHODS
 
 =head2 run
 
@@ -31,8 +15,9 @@ Main function of Netperf::Server.
 @return error   - error string
 
 =cut
-        method run
-        {
+        sub run {
+                my ($self) = @_;
+
                 my $srv = IO::Socket::INET->new( LocalPort => 5000, Listen => 5);
                 return "Can not open server socket:$!" if not $srv;
                 my $msg_sock = $srv->accept();
@@ -42,61 +27,19 @@ Main function of Netperf::Server.
                 }
                 return 0;
         }
-}
 
 1;
 
 __END__
+       
+=head1 SYNOPSIS
 
-=head1 BUGS
+You most likely want to run the frontend cmdline tool like this
 
-Please report any bugs or feature requests to
-C<bug-tapper-testsuite-netperf at rt.cpan.org>, or through the web
-interface at
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Tapper-TestSuite-Netperf>.
-I will be notified, and then you'll automatically be notified of
-progress on your bug as I make changes.
+  # host 1
+  $ tapper-testsuite-netperf-server
 
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc Tapper::TestSuite::Netperf
-
-
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Tapper-TestSuite-Netperf>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Tapper-TestSuite-Netperf>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Tapper-TestSuite-Netperf>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Tapper-TestSuite-Netperf/>
-
-=back
-
-
-=head1 AUTHOR
-
-AMD OSRC Tapper Team, C<< <tapper at amd64.org> >>
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2009-2011 AMD OSRC Tapper Team, all rights reserved.
-
-This program is released under the following license: freebsd
-
+  # host 2
+  $ tapper-testsuite-netperf-client
 
 =cut
