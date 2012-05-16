@@ -30,7 +30,7 @@ my $pid = fork();
 if ($pid == 0) {
         $srv->run();
         exit 0;
-} 
+}
 
 
 my $dir = tempdir( CLEANUP => 1 );
@@ -63,7 +63,7 @@ eval {
         while (my $line=<$msg_sock>) {
                 $content .= $line;
         }
-        
+
         alarm(0);
 };
 is($@, '', 'Get state messages in time');

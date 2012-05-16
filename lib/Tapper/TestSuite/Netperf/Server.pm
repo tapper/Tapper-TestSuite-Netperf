@@ -31,7 +31,7 @@ Main function of Netperf::Server.
 1;
 
 __END__
-       
+
 =head1 SYNOPSIS
 
 You most likely want to run the frontend cmdline tool like this

@@ -151,7 +151,7 @@ Parse output of netperf command.
                 if ($output !~ m/^[0-9. ]+$/) {
                         $output =~ s/\n/\n#/gx;
                         return "not ok - $netperf_desc\n#$output";
-                
+
                 }
                 $output=~s|^\s*(\S)|$1|;
                 my @output = split /\s+/,$output;
@@ -168,7 +168,7 @@ Parse output of netperf command.
         }
 
 
-=head2
+=head2 run
 
 Run the netperf client.
 
@@ -191,7 +191,7 @@ Run the netperf client.
                 # even though, server and client are synced by PRC, the
                 # server may take a little more time to set up than the
                 # client so give it some extra time
-                sleep(2); 
+                sleep(2);
                 my $socket = IO::Socket::INET->new(PeerHost => $peers->[0], PeerPort => 5000);
                 my $msg;
                 $msg  = 'not ' if not $socket;
