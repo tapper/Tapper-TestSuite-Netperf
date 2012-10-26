@@ -19,4 +19,8 @@ You most likely want to run the frontend cmdline tool like this
   # host 2
   $ tapper-testsuite-netperf-client
 
+=head1 DESCRIPTION
+
+This distribution provides Tapper with Network performance measurements.
+
 =cut
