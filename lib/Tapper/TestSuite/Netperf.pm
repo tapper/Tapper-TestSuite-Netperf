@@ -1,6 +1,7 @@
 package Tapper::TestSuite::Netperf;
 # ABSTRACT: Tapper - Network performance measurements
 
+use 5.022;
 use Moose;
 
 with 'MooseX::Log::Log4perl';
